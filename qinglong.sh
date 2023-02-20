@@ -132,7 +132,7 @@ if [ "$(grep -c "q1hang/jd" $ql_path/data/config/crontab.list)" != 0 ]; then
         error "您的任务列表中已存在拉库任务，刷新浏览器去执行拉库任务吧！"
 else
     ing "开始添加q1hang/jd拉库任务"
-    sed -i 's/RepoFileExtensions.*/RepoFileExtensions=\"js py sh ts\"/g' $ql_path/data/config/config.sh
+    sed -i 's/RepoFileExtensions.*/RepoFileExtensions=\"js py sh ts bbk\"/g' $ql_path/data/config/config.sh
     if [ "$(grep -c "token" $ql_path/data/config/auth.json)" != 0 ]; then
         docker exec -it qinglong /bin/bash -c "token=\$(cat /ql/config/auth.json | jq --raw-output .token) && curl -s -H 'Accept: application/json' -H \"Authorization: Bearer \$token\" -H 'Content-Type: application/json;charset=UTF-8' -H 'Accept-Language: zh-CN,zh;q=0.9' --data-binary '{\"name\":\"拉库\",\"command\":\"ql repo https://gitee.com/q1hang/jd.git \\\"jd_\\\" \\\"backUp\\\"  \\\"^jd[^_]|USER|JD|function|sendNotify\\\"\",\"schedule\":\"45 7-23/2  * * *\"}' --compressed 'http://127.0.0.1:5700/api/crons?t=1627380635389'"
     ok "已添加拉库任务，刷新浏览器后去执行拉库任务吧!"
